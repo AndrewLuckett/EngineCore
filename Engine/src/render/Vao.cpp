@@ -1,6 +1,7 @@
 #include "ra.h"
 #include "Vao.h"
 #include "Renderer.h"
+#include "Window.h"
 
 Model createVAO() {
 	uint vaoId;
@@ -8,6 +9,7 @@ Model createVAO() {
 	glBindVertexArray(vaoId);
 
 	Model out = Model(vaoId);
+	out.programId = window::getProgramID();
 
 	glBindVertexArray(0);
 	return out;

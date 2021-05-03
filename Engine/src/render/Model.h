@@ -7,14 +7,15 @@
 
 typedef struct Model {
 	uint vaoID;
-	Default(uint, vertexCount);
-	Default(uint, vertexVBO);
-	Default(uint, indicesVBO);
-	Default(uint, textureCoordsVBO);
+	uint vertexCount;
+	uint vertexVBO;
+	uint indicesVBO;
+	uint textureCoordsVBO;
 
 	TransMatrix transform;
 
-	Default(uint, textureId);
+	uint textureId;
+	uint programId;
 
 	Model() : Model(0){}
 	Model(uint vi) {

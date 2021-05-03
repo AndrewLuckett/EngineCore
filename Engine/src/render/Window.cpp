@@ -31,18 +31,7 @@ int window::init(const char windowTitle[]) {
 }
 
 int window::myinit() {
-	string vesh = ParseFile("res/shaders/light.vert");
-	string frsh = ParseFile("res/shaders/light.frag");
-
-	programID = glCreateProgram();
-
-	uint vs = CompileShader(GL_VERTEX_SHADER, vesh);
-	uint fs = CompileShader(GL_FRAGMENT_SHADER, frsh);
-
-	glAttachShader(programID, vs);
-	glAttachShader(programID, fs);
-
-	glLinkProgram(programID);
+	programID = GenerateProgram("res/shaders/core.vert", "res/shaders/core.frag");
 
 	glUseProgram(programID);
 	renderer::init();

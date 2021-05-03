@@ -3,9 +3,6 @@
 
 #include <string>
 
-#define Default(t, s) t s = 0;
-// Create and init a var
-
 #ifdef _DEBUG
 	#include <iostream>
 	#define debugPrint(v) std::cout << v << std::endl;

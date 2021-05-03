@@ -37,3 +37,19 @@ uint CompileShader(uint type, const string &source) {
 	}
 	return id;
 }
+
+uint GenerateProgram(const string& vertex, const string& fragment) {
+	string vesh = ParseFile(vertex);
+	string frsh = ParseFile(fragment);
+
+	uint programID = glCreateProgram();
+
+	uint vs = CompileShader(GL_VERTEX_SHADER, vesh);
+	uint fs = CompileShader(GL_FRAGMENT_SHADER, frsh);
+
+	glAttachShader(programID, vs);
+	glAttachShader(programID, fs);
+
+	glLinkProgram(programID);
+	return programID;
+}

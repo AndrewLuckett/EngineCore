@@ -40,6 +40,7 @@ void loadVec3(int location, vec3 value) {
 }
 
 int renderer::draw(Model &model) {
+	glUseProgram(model.programId);
 	glBindVertexArray(model.vaoID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
