@@ -2,15 +2,17 @@
 #include "Window.h"
 #include "Renderer.h"
 
-uint mataLoc;
-uint matbLoc;
+uint objectMat;
+uint cameraMat;
+uint currentProgram;
 
 int renderer::init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	mataLoc = glGetUniformLocation(window::getProgramID(), "trana");
-	matbLoc = glGetUniformLocation(window::getProgramID(), "tranb");
+	setProgram(window::getProgramID());
+	objectMat = glGetUniformLocation(window::getProgramID(), "trans");
+	cameraMat = glGetUniformLocation(window::getProgramID(), "camera");
 	return 0;
 }
 
@@ -32,22 +34,21 @@ int renderer::pushToScreen() { //ought to go back into window?
 	return 0;
 }
 
-void loadFloat(int location, float value) {
-	glUniform1f(location, value);
-}
-void loadVec3(int location, vec3 value) {
-	glUniform3f(location, value.x, value.y, value.z);
+int renderer::setProgram(uint progId) {
+	currentProgram = progId;
+	glUseProgram(progId);
+	return 0;
 }
 
 int renderer::draw(Model &model) {
-	glUseProgram(model.programId);
+	if (model.programId != currentProgram)
+		setProgram(model.programId);
 	glBindVertexArray(model.vaoID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindTexture(GL_TEXTURE_2D, model.textureId);
 
-	loadVec3(mataLoc, model.transform.top);
-	loadVec3(matbLoc, model.transform.mid);
+	glUniformMatrix3fv(objectMat, 1, GL_TRUE, &model.transform.top.x);
 
 	glDrawElements(GL_TRIANGLES, sizeof(uint)*model.vertexCount, GL_UNSIGNED_INT, 0);
 
@@ -55,6 +56,12 @@ int renderer::draw(Model &model) {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glBindVertexArray(0);
+	return 0;
+}
+
+int renderer::loadGlobalTransform(uint progID, TransMatrix mat) {
+	setProgram(progID);
+	glUniformMatrix3fv(cameraMat, 1, GL_TRUE, &mat.top.x);
 	return 0;
 }
 

@@ -1,9 +1,9 @@
 #include "FrameCounter.h"
-#include <sstream>
-#include <cmath>
 #include "../render/Window.h"
 #include "../render/Texture.h"
 #include "../render/Vao.h"
+#include "../render/ShaderGen.h"
+#include "../render/Renderer.h"
 
 FrameCounter::FrameCounter() {
 	out = getCell();
@@ -12,6 +12,7 @@ FrameCounter::FrameCounter() {
 		ss << "res/textures/num/" << i << ".png";
 		textures[i] = loadTexture(ss.str(), GL_NEAREST);
 	}
+	renderer::loadGlobalTransform(out.programId, TransMatrix());
 }
 
 int FrameCounter::update(timesys::system_clock::duration deltaTime) {
@@ -45,8 +46,8 @@ int FrameCounter::getRenderArr(std::queue<Model>& arr) {
 	float gap = width / 2;
 
 	for (int i = 0; i < digits.size(); i++) {
-		out.transform.top = { width, 0.0f, (width + gap) * i - 1.0f + gap };
-		out.transform.mid = { 0.0f, height, 1.0f - height };
+		out.transform.top = { width, 0.0f, (width + gap) * i - 1.0f + gap};
+		out.transform.mid = { 0.0f, height, 1.0f - height};
 
 		out.textureId = textures[digits[digits.size() - (1 + i)]];
 
@@ -65,7 +66,8 @@ Model FrameCounter::getCell() {
 	std::vector<vec2> t = { {0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f} };
 	loadVertexData(out, v);
 	loadTextureCoordinates(out, t);
-
+	uint prog = GenerateProgram("res/shaders/core.vert", "res/shaders/core.frag");
+	out.programId = prog;
 	return out;
 }
 
