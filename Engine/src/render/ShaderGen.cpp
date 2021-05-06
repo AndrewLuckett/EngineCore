@@ -3,7 +3,7 @@
     #include <iostream>
 #endif
 #include <fstream>
-
+#include "Renderer.h"
 #include "ShaderGen.h"
 
 string ParseFile(const string &filepath) {
@@ -51,5 +51,7 @@ uint GenerateProgram(const string& vertex, const string& fragment) {
 	glAttachShader(programID, fs);
 
 	glLinkProgram(programID);
+	renderer::loadGlobalTransform(programID, TransMatrix());
+
 	return programID;
 }

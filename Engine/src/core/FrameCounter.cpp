@@ -12,7 +12,6 @@ FrameCounter::FrameCounter() {
 		ss << "res/textures/num/" << i << ".png";
 		textures[i] = loadTexture(ss.str(), GL_NEAREST);
 	}
-	renderer::loadGlobalTransform(out.programId, TransMatrix());
 }
 
 int FrameCounter::update(timesys::system_clock::duration deltaTime) {
