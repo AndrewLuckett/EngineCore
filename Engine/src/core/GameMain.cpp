@@ -11,14 +11,13 @@ int GameMain::update(timesys::system_clock::duration deltaTime) { //Perform ever
 	auto now = std::chrono::system_clock::now();
 	deltaTime = now - suLastRun;
 	suLastRun = now;
+
 	if (now - fuLastRun > fuTime) {
 		fuLastRun = now;
-		fixedUpdate();
+		System::fixedUpdate();
 	}
 	
-	for (auto const& i : subsystems) {
-		i->update(deltaTime);
-	}
+	System::update(deltaTime);
 
 	return 0;
 }

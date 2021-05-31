@@ -49,7 +49,7 @@ GLFWwindow* window::getWindow(){
 	return windowPane;
 }
 
-uint window::getProgramID(){
+uint window::getProgramID(){ //Should rename to get defaultProgId
 	return programID;
 }
 
